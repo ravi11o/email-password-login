@@ -5,9 +5,12 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
 var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
+var flash = require('connect-flash');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var auth = require('./middlewares/auth');
 
 mongoose.connect('mongodb://localhost/login', 
 { useNewUrlParser: true, useUnifiedTopology: true },
@@ -28,12 +31,14 @@ app.use(cookieParser());
 app.use(session({
   secret: 'jshdgfhjdsgfjhdgf',
   resave: false,
-  saveUninitialized: false
-}))
+  saveUninitialized: false,
+  store: new MongoStore({ mongooseConnection: mongoose.connection })
+}));
+app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/users',usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
