@@ -5,9 +5,14 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <% if(user) { %>
+      <h1><%= user.name %></h1>
+      <a href="/articles/new">Add article</a>
+      <a href="/users/logout">logout</a>
+
+    <% } else { %>
     <a href="/users/login">Login</a>
-    <a href="/users/logout">logout</a>
+    <% } %>
+    <p>Welcome to <%= title %></p>
   </body>
 </html>

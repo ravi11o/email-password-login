@@ -10,6 +10,7 @@ var flash = require('connect-flash');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var articlesRouter = require('./routes/articles');
 var auth = require('./middlewares/auth');
 
 mongoose.connect('mongodb://localhost/login', 
@@ -37,8 +38,11 @@ app.use(session({
 app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(auth.userInfo);
+
 app.use('/', indexRouter);
 app.use('/users',usersRouter);
+app.use('/articles',articlesRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

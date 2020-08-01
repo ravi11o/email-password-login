@@ -16,7 +16,6 @@ router.post('/register', (req, res) => {
   })
 });
 
-router.use(auth.verifyUserLogin);
 
 router.get('/login',  (req, res) => {
   var warn = req.flash('warn')[0];
@@ -41,7 +40,7 @@ router.post('/login', (req, res, next) => {
     if(!user.validatePassword(password)) return res.redirect('/users/login')
     // log a user in
     req.session.userId = user.id;
-    res.redirect('/users')
+    res.redirect('/articles')
   })
 })
 
